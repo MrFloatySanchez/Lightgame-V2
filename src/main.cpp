@@ -4,8 +4,8 @@ Bei den Pins identische bauteile nebeneinaner anschließen
 */
 
 const int Lichtschranken_Anzahl = 4;
-const int Lichtschranke_Pin[Lichtschranken_Anzahl] = { 4, 5, 6, 7 };
-const int Lichtschranke_LED_Pin[Lichtschranken_Anzahl] = { 8, 9, 10, 11 };
+const int Lichtschranke_Pin[Lichtschranken_Anzahl] = { 8, 9, 10, 11 };
+const int Lichtschranke_LED_Pin[Lichtschranken_Anzahl] = { 4, 5, 6, 7 };
 bool Lichtschranke_Status[Lichtschranken_Anzahl];
 
 void
