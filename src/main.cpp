@@ -1,23 +1,15 @@
 #include <Arduino.h>
-/*
-Bei den Pins identische bauteile nebeneinaner anschließen
-*/
 
-const int Lichtschranken_Anzahl = 4;
-const int Lichtschranke_Pin[Lichtschranken_Anzahl] = { 8, 9, 10, 11 };
-const int Lichtschranke_LED_Pin[Lichtschranken_Anzahl] = { 4, 5, 6, 7 };
-bool Lichtschranke_Status[Lichtschranken_Anzahl];
+const int pin_Lichtschranke = 8;
+const int pin_LED_Lichtschranke = 4;
+bool read_Lichtschranke;
 
 void
 setup ()
 {
-  for (int idx = 0; idx < Lichtschranken_Anzahl; idx++)
-    {
-      pinMode (Lichtschranke_Pin[idx], INPUT_PULLUP);
-      pinMode (Lichtschranke_LED_Pin[idx], OUTPUT);
-    }
-  // pinMode (0, INPUT_PULLUP);
-  // pinMode (4, OUTPUT);
+  pinMode (pin_Lichtschranke, INPUT_PULLUP);
+  pinMode (pin_LED_Lichtschranke, OUTPUT);
+
   pinMode (LED_BUILTIN, OUTPUT);
   Serial.begin (9600);
 }
@@ -25,24 +17,22 @@ setup ()
 void
 loop ()
 {
-  for (int idx = 0; idx < Lichtschranken_Anzahl; idx++)
-    {
-      Lichtschranke_Status[idx] = digitalRead (Lichtschranke_Pin[idx]);
 
-      Serial.print (idx);
+      read_Lichtschranke = digitalRead (pin_Lichtschranke);
+
       Serial.print (">");
-      Serial.print (Lichtschranke_Status[idx]);
+      Serial.print (read_Lichtschranke);
       Serial.print (" | ");
 
-      if (Lichtschranke_Status[idx])
+      if (read_Lichtschranke)
         {
-          digitalWrite (Lichtschranke_LED_Pin[idx], LOW);
-          delay(3000);
+          digitalWrite (pin_LED_Lichtschranke, LOW);
+          delay (3000);
         }
       else
         {
-          digitalWrite (Lichtschranke_LED_Pin[idx], HIGH);
+          digitalWrite (pin_LED_Lichtschranke, HIGH);
         }
-    }
+
   Serial.println ();
 }
