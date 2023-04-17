@@ -1,0 +1,7 @@
+{
+    "editor.renderWhitespace": "selection",
+    "editor.autoClosingDelete": "always",
+    "editor.autoClosingOvertype": "always",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "cmake.configureOnOpen": true
+}
