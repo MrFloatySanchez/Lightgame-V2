@@ -36,11 +36,12 @@ loop ()
 
       if (Lichtschranke_Status[idx])
         {
-          digitalWrite (Lichtschranke_LED_Pin[idx], HIGH);
+          digitalWrite (Lichtschranke_LED_Pin[idx], LOW);
+          delay(3000);
         }
       else
         {
-          digitalWrite (Lichtschranke_LED_Pin[idx], LOW);
+          digitalWrite (Lichtschranke_LED_Pin[idx], HIGH);
         }
     }
   Serial.println ();
