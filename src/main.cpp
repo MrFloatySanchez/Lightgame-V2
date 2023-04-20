@@ -18,9 +18,13 @@ struct modul_Lichtschranke
 {
   const int pin_Signal;
   const int pin_LED;
+  
+  // status Alarm und LED im struct, damit die richtige LED blinkt
+  bool alarm;
+  bool led;
 };
 
-modul_Lichtschranke lichtschranke[1] = { { 18, A12 } };
+modul_Lichtschranke lichtschranke[1] = { { 18, A12, false, false } };
 
 /* Status-Varriabeln und Globals */
 bool lichtschranke_unterbrochen, alarm_on, alarm_last, alarm_silent;
