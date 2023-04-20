@@ -10,10 +10,7 @@ enum Alarm_Status
   on = 1,
   silent = 2,
 } alarm;
-/* 
-const int pin_Lichtschranke = 18;
-const int pin_LED_Lichtschranke = A12;
- */
+
 const int pin_Alarm_Ton = 13;
 const int pin_Alarm_Licht = 12;
 
