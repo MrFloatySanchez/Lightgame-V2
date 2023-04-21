@@ -1,5 +1,34 @@
+/*
+#ifdef MONITOR
+Serial.print ();
+Serial.print (" > ");
+Serial.print ();
+Serial.print (" - ");
+Serial.print ();
+Serial.print (" | ");
+
+Serial.println ();
+#endif
+
+#ifdef MONITOR
+int test[5] = { 10, 11, 12, 13, 14 };
+int i = 0;
+for (auto testNumber : test)
+  {
+    Serial.print (i);
+    Serial.print (" > ");
+    Serial.print (testNumber);
+    Serial.print (" | ");
+    ++i;
+  }
+Serial.println ();
+#endif
+*/
+
 // define MONITOR auskommentieren um den seriellen Monitor auszulassen
 #define MONITOR
+#define ANALOG_PIN_A15 A15
+#define ANALOG_PIN_A14 A14
 
 #include <Arduino.h>
 
@@ -13,123 +42,140 @@ enum Alarm_Status
 
 const int pin_Alarm_Ton = 13;
 const int pin_Alarm_Licht = 12;
+bool Alarm_Ton;
+bool Alarm_Licht;
+unsigned long time_alarm_last;
+unsigned long time_duration_alarm = 1600;
+Alarm_Status Globaler_Alarm = Alarm_Status::off;
 
-int test[5] = { 10, 11, 12, 13, 14 };
+bool lichtschranke_unterbrochen;
+unsigned long time_current;
+unsigned long time_last_flash;
+unsigned long time_duration_flash = 60;
+unsigned long time_duration_flash2 = time_duration_flash * 2;
 
-const int pin_Lichtschranke_Signal = 21;
-const int pin_Lichtschranke_LED = A15;
-Alarm_Status alarm = off;
-bool led = 1;
+const int Anzahl_Lichtschranken = 4;
+struct modul_Lichtschranke
+{
+  const int pin_Signal{};
+  const int pin_LED{};
+  Alarm_Status alarm{ off };
+  bool led{ HIGH };
 
-/* Status-Varriabeln und Globals */
-bool lichtschranke_unterbrochen, alarm_on, alarm_last, alarm_silent;
-unsigned long time_current, time_last_flash, time_alarm_last,
-    time_duration_flash = 60, time_duration_flash2 = time_duration_flash * 2,
-    time_duration_alarm = 1600;
+  modul_Lichtschranke (int SignalPin, int LEDPin)
+      : pin_Signal (SignalPin), pin_LED (LEDPin)
+  {
+    alarm = Alarm_Status::off;
+    led = HIGH;
+  }
+
+  void
+  flash ()
+  {
+    if (time_current - time_last_flash > time_duration_flash)
+      {
+        time_last_flash = time_current;
+        led = !led;
+      }
+  }
+
+  Alarm_Status
+  SensorenLesen ()
+  { // Lichtschranke auswerten und Alarm setzten
+
+    lichtschranke_unterbrochen
+        = digitalRead (pin_Signal); // HIGH > unterbrochen
+
+    if (lichtschranke_unterbrochen && alarm == Alarm_Status::off)
+      {
+        time_alarm_last = time_current;
+        alarm = Alarm_Status::on;
+      }
+    else if ((time_current - time_alarm_last < time_duration_alarm))
+      {
+        flash ();
+      }
+    else if (lichtschranke_unterbrochen)
+      {
+        flash ();
+        alarm = Alarm_Status::silent;
+      }
+    else
+      {
+        led = HIGH;
+        alarm = Alarm_Status::off;
+        // delay (10);
+      }
+    return alarm;
+  }
+
+} Alle_Lichtschranken[Anzahl_Lichtschranken] = {
+  { 8, 4 }, { 9, 5 }, /*
+             { 10, 6 },
+             { 11, 7 }, */
+};
 
 void
-flash ()
-{
-  if (time_current - time_last_flash > time_duration_flash)
+AlarmAuswerten ()
+{ // Alarm-Vairraiable auswerten und? schalten
+  switch (Globaler_Alarm)
     {
-      time_last_flash = time_current;
-      led = !led;
+    case Alarm_Status::off:
+      Alarm_Ton = HIGH;
+      Alarm_Licht = HIGH;
+      break;
+    case Alarm_Status::on:
+      Alarm_Ton = LOW;
+      Alarm_Licht = LOW;
+      break;
+    case Alarm_Status::silent:
+      Alarm_Ton = HIGH;
+      Alarm_Licht = LOW;
+      break;
+    default:
+      break;
     }
 }
 
 void
 setup ()
 {
-  pinMode (pin_Lichtschranke_Signal, INPUT_PULLUP);
-  pinMode (pin_Lichtschranke_LED, OUTPUT);
-  pinMode (pin_Alarm_Ton, OUTPUT);
-  pinMode (pin_Alarm_Licht, OUTPUT);
-
 #ifdef MONITOR
   Serial.begin (9600);
 #endif
+
+  for (modul_Lichtschranke lichtschranke : Alle_Lichtschranken)
+    {
+      pinMode (lichtschranke.pin_Signal, INPUT_PULLUP);
+      pinMode (lichtschranke.pin_LED, OUTPUT);
+    }
+  pinMode (pin_Alarm_Ton, OUTPUT);
+  pinMode (pin_Alarm_Licht, OUTPUT);
 }
 
 void
 loop ()
 {
-  // LVL und Blinkmodi lesen
-  // LVL und Blinkmodi schalten
-  // timevergleiche schon durchrechnen?
-#ifdef MONITOR
-  int i = 0;
-  for (auto testNumber : test)
-    {
-      Serial.print (i);
-      Serial.print (" > ");
-      Serial.print (testNumber);
-      Serial.print (" | ");
-      ++i;
-    }
-  Serial.println ();
-#endif
-
   time_current = millis ();
-  lichtschranke_unterbrochen
-      = digitalRead (pin_Lichtschranke_Signal); // HIGH > unterbrochen
+  Globaler_Alarm = Alarm_Status::off;
 
-  // Lichtschranke auswerten und Alarm setzten
-  if (lichtschranke_unterbrochen && alarm == Alarm_Status::off)
+  // LVL und Blinkmodi lesen
+  // timevergleiche schon durchrechnen?
+
+  for (modul_Lichtschranke lichtschranke : Alle_Lichtschranken)
     {
-      time_alarm_last = time_current;
-      alarm = Alarm_Status::on;
+      Alarm_Status Alarm_temp = lichtschranke.SensorenLesen ();
+      Globaler_Alarm = max (Globaler_Alarm, Alarm_temp);
     }
 
-  if ((time_current - time_alarm_last
-       < time_duration_alarm)) // alarm > Alarm_Status::off
-    {
-      flash ();
-    }
-  else if (lichtschranke_unterbrochen)
-    {
-      alarm = Alarm_Status::silent;
-      flash ();
-    }
-  else
-    {
-      alarm = Alarm_Status::off;
-      led = HIGH;
-      delay (10);
-    }
+  // LVL und Blinkmodi schalten
 
-  // Alarm-Vairraiable auswerten und? schalten
-  bool status_Alarm_Ton, status_Alarm_Licht;
-  switch (alarm)
+  AlarmAuswerten ();
+
+  for (modul_Lichtschranke lichtschranke : Alle_Lichtschranken)
     {
-    case Alarm_Status::off:
-      status_Alarm_Ton = HIGH;
-      status_Alarm_Licht = HIGH;
-      led = HIGH;
-      break;
-    case Alarm_Status::on:
-      status_Alarm_Ton = LOW;
-      status_Alarm_Licht = LOW;
-      break;
-    case Alarm_Status::silent:
-      status_Alarm_Ton = HIGH;
-      status_Alarm_Licht = LOW;
-      break;
-    default:
-      break;
+      digitalWrite (lichtschranke.pin_LED, lichtschranke.led);
     }
-
-  digitalWrite (pin_Lichtschranke_LED, led);
-  digitalWrite (pin_Alarm_Ton, status_Alarm_Ton);
-  digitalWrite (pin_Alarm_Licht, status_Alarm_Licht);
-
-  /* #ifdef MONITOR
-    Serial.print ("> ");
-    Serial.print (lichtschranke_unterbrochen);
-    Serial.print (" | ");
-    Serial.print (alarm);
-    Serial.print (" | ");
-    Serial.print (time_alarm_last);
-    Serial.print (" | ");
-    Serial.println ();
-  #endif */
+  digitalWrite (pin_Alarm_Ton, Alarm_Ton);
+  digitalWrite (pin_Alarm_Licht, Alarm_Licht);
 }
