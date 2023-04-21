@@ -1,5 +1,5 @@
 // define MONITOR auskommentieren um den seriellen Monitor auszulassen
-// #define MONITOR
+#define MONITOR
 
 #include <Arduino.h>
 
@@ -13,6 +13,8 @@ enum Alarm_Status
 
 const int pin_Alarm_Ton = 13;
 const int pin_Alarm_Licht = 12;
+
+int test[5] = { 10, 11, 12, 13, 14 };
 
 const int pin_Lichtschranke_Signal = 21;
 const int pin_Lichtschranke_LED = A15;
@@ -54,6 +56,19 @@ loop ()
   // LVL und Blinkmodi lesen
   // LVL und Blinkmodi schalten
   // timevergleiche schon durchrechnen?
+#ifdef MONITOR
+  int i = 0;
+  for (auto testNumber : test)
+    {
+      Serial.print (i);
+      Serial.print (" > ");
+      Serial.print (testNumber);
+      Serial.print (" | ");
+      ++i;
+    }
+  Serial.println ();
+#endif
+
   time_current = millis ();
   lichtschranke_unterbrochen
       = digitalRead (pin_Lichtschranke_Signal); // HIGH > unterbrochen
@@ -107,14 +122,14 @@ loop ()
   digitalWrite (pin_Alarm_Ton, status_Alarm_Ton);
   digitalWrite (pin_Alarm_Licht, status_Alarm_Licht);
 
-#ifdef MONITOR
-  Serial.print ("> ");
-  Serial.print (lichtschranke_unterbrochen);
-  Serial.print (" | ");
-  Serial.print (alarm);
-  Serial.print (" | ");
-  Serial.print (time_alarm_last);
-  Serial.print (" | ");
-  Serial.println ();
-#endif
+  /* #ifdef MONITOR
+    Serial.print ("> ");
+    Serial.print (lichtschranke_unterbrochen);
+    Serial.print (" | ");
+    Serial.print (alarm);
+    Serial.print (" | ");
+    Serial.print (time_alarm_last);
+    Serial.print (" | ");
+    Serial.println ();
+  #endif */
 }
