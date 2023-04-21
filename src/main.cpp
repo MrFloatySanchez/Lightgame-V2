@@ -59,11 +59,11 @@ struct modul_Lichtschranke
 {
   const int pin_Signal{};
   const int pin_LED{};
-  Alarm_Status alarm{ off };
-  bool led{ HIGH };
+  Alarm_Status alarm{};
+  bool led{};
 
-  modul_Lichtschranke (int SignalPin, int LEDPin)
-      : pin_Signal (SignalPin), pin_LED (LEDPin)
+  modul_Lichtschranke (int SignalPin, int ledPin)
+      : pin_Signal (SignalPin), pin_LED (ledPin)
   {
     alarm = Alarm_Status::off;
     led = HIGH;
@@ -108,11 +108,9 @@ struct modul_Lichtschranke
       }
     return alarm;
   }
-
-} Alle_Lichtschranken[Anzahl_Lichtschranken] = {
-  { 8, 4 }, { 9, 5 }, /*
-             { 10, 6 },
-             { 11, 7 }, */
+} Alle_Lichtschranken[] = {
+  modul_Lichtschranke (8, 4),
+  modul_Lichtschranke (9, 5),
 };
 
 void
