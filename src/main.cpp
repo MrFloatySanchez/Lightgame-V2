@@ -66,17 +66,20 @@ loop ()
     }
 
   if ((time_current - time_alarm_last
-       > time_duration_alarm)) // alarm > Alarm_Status::off
+       < time_duration_alarm)) // alarm > Alarm_Status::off
     {
-      if (lichtschranke_unterbrochen)
-        {
-          alarm = Alarm_Status::silent;
-        }
-      else
-        {
-          alarm = Alarm_Status::off;
-          delay (10);
-        }
+      flash ();
+    }
+  else if (lichtschranke_unterbrochen)
+    {
+      alarm = Alarm_Status::silent;
+      flash ();
+    }
+  else
+    {
+      alarm = Alarm_Status::off;
+      led = HIGH;
+      delay (10);
     }
 
   // Alarm-Vairraiable auswerten und? schalten
@@ -91,17 +94,14 @@ loop ()
     case Alarm_Status::on:
       status_Alarm_Ton = LOW;
       status_Alarm_Licht = LOW;
-      flash ();
       break;
     case Alarm_Status::silent:
       status_Alarm_Ton = HIGH;
       status_Alarm_Licht = LOW;
-      flash ();
       break;
     default:
       break;
     }
-
 
   digitalWrite (pin_Lichtschranke_LED, led);
   digitalWrite (pin_Alarm_Ton, status_Alarm_Ton);
