@@ -9,22 +9,15 @@ enum Alarm_Status
   off = 0,
   on = 1,
   silent = 2,
-} alarm;
+};
 
 const int pin_Alarm_Ton = 13;
 const int pin_Alarm_Licht = 12;
 
-struct modul_Lichtschranke
-{
-  const int pin_Signal;
-  const int pin_LED;
-  
-  // status Alarm und LED im struct, damit die richtige LED blinkt
-  bool alarm;
-  bool led;
-};
-
-modul_Lichtschranke lichtschranke[1] = { { 18, A12, false, false } };
+const int pin_Lichtschranke_Signal = 21;
+const int pin_Lichtschranke_LED = A15;
+Alarm_Status alarm = off;
+bool led = 1;
 
 /* Status-Varriabeln und Globals */
 bool lichtschranke_unterbrochen, alarm_on, alarm_last, alarm_silent;
@@ -38,17 +31,15 @@ flash ()
   if (time_current - time_last_flash > time_duration_flash)
     {
       time_last_flash = time_current;
-      static bool temp = LOW;
-      digitalWrite (lichtschranke[0].pin_LED, temp);
-      temp = !temp;
+      led = !led;
     }
 }
 
 void
 setup ()
 {
-  pinMode (lichtschranke[0].pin_Signal, INPUT_PULLUP);
-  pinMode (lichtschranke[0].pin_LED, OUTPUT);
+  pinMode (pin_Lichtschranke_Signal, INPUT_PULLUP);
+  pinMode (pin_Lichtschranke_LED, OUTPUT);
   pinMode (pin_Alarm_Ton, OUTPUT);
   pinMode (pin_Alarm_Licht, OUTPUT);
 
@@ -65,7 +56,7 @@ loop ()
   // timevergleiche schon durchrechnen?
   time_current = millis ();
   lichtschranke_unterbrochen
-      = digitalRead (lichtschranke[0].pin_Signal); // HIGH > unterbrochen
+      = digitalRead (pin_Lichtschranke_Signal); // HIGH > unterbrochen
 
   // Lichtschranke auswerten und Alarm setzten
   if (lichtschranke_unterbrochen && alarm == Alarm_Status::off)
@@ -74,8 +65,8 @@ loop ()
       alarm = Alarm_Status::on;
     }
 
-  if ((alarm > Alarm_Status::off)
-      && (time_current - time_alarm_last > time_duration_alarm))
+  if ((time_current - time_alarm_last
+       > time_duration_alarm)) // alarm > Alarm_Status::off
     {
       if (lichtschranke_unterbrochen)
         {
@@ -95,7 +86,7 @@ loop ()
     case Alarm_Status::off:
       status_Alarm_Ton = HIGH;
       status_Alarm_Licht = HIGH;
-      digitalWrite (lichtschranke[0].pin_LED, HIGH);
+      led = HIGH;
       break;
     case Alarm_Status::on:
       status_Alarm_Ton = LOW;
@@ -111,6 +102,8 @@ loop ()
       break;
     }
 
+
+  digitalWrite (pin_Lichtschranke_LED, led);
   digitalWrite (pin_Alarm_Ton, status_Alarm_Ton);
   digitalWrite (pin_Alarm_Licht, status_Alarm_Licht);
 
