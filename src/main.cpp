@@ -160,7 +160,6 @@ Modul_Lichtschranke Alle_Lichtschranken[] = {
   Modul_Lichtschranke(20, A14),
   Modul_Lichtschranke(19, A13),
   Modul_Lichtschranke(18, A12),
-
 };
 
 void
