@@ -189,10 +189,11 @@ struct Modul_Lichtschranke
 };
 
 Modul_Lichtschranke Alle_Lichtschranken[] = {
-    Modul_Lichtschranke(21, A15),
-    Modul_Lichtschranke(20, A14),
-    Modul_Lichtschranke(19, A13),
-    Modul_Lichtschranke(18, A12),
+    /*
+Modul_Lichtschranke(21, A15),
+Modul_Lichtschranke(20, A14),
+Modul_Lichtschranke(19, A13),
+Modul_Lichtschranke(18, A12), */
 };
 
 void alarmSwitch()
@@ -217,66 +218,66 @@ void alarmSwitch()
 }
 
 void setLevelZero()
-{
-  Alle_Lichtschranken[0].aktiv = 1;
-  Alle_Lichtschranken[1].aktiv = 1;
-  Alle_Lichtschranken[2].aktiv = 1;
-  Alle_Lichtschranken[3].aktiv = 1;
-  Alle_Lichtschranken[4].aktiv = 1;
-  Alle_Lichtschranken[5].aktiv = 1;
-  Alle_Lichtschranken[6].aktiv = 1;
-  Alle_Lichtschranken[7].aktiv = 1;
-  Alle_Lichtschranken[8].aktiv = 1;
-  Alle_Lichtschranken[9].aktiv = 1;
-  Alle_Lichtschranken[10].aktiv = 1;
-  Alle_Lichtschranken[11].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[13].aktiv = 1;
-  Alle_Lichtschranken[15].aktiv = 1;
-  Alle_Lichtschranken[16].aktiv = 1;
+{ /*
+   Alle_Lichtschranken[0].aktiv = 1;
+   Alle_Lichtschranken[1].aktiv = 1;
+   Alle_Lichtschranken[2].aktiv = 1;
+   Alle_Lichtschranken[3].aktiv = 1;
+   Alle_Lichtschranken[4].aktiv = 1;
+   Alle_Lichtschranken[5].aktiv = 1;
+   Alle_Lichtschranken[6].aktiv = 1;
+   Alle_Lichtschranken[7].aktiv = 1;
+   Alle_Lichtschranken[8].aktiv = 1;
+   Alle_Lichtschranken[9].aktiv = 1;
+   Alle_Lichtschranken[10].aktiv = 1;
+   Alle_Lichtschranken[11].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[13].aktiv = 1;
+   Alle_Lichtschranken[15].aktiv = 1;
+   Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void setLevelOne()
-{
-  Alle_Lichtschranken[0].aktiv = 1;
-  Alle_Lichtschranken[1].aktiv = 1;
-  Alle_Lichtschranken[2].aktiv = 1;
-  Alle_Lichtschranken[3].aktiv = 1;
-  Alle_Lichtschranken[4].aktiv = 1;
-  Alle_Lichtschranken[5].aktiv = 1;
-  Alle_Lichtschranken[6].aktiv = 1;
-  Alle_Lichtschranken[7].aktiv = 1;
-  Alle_Lichtschranken[8].aktiv = 1;
-  Alle_Lichtschranken[9].aktiv = 1;
-  Alle_Lichtschranken[10].aktiv = 1;
-  Alle_Lichtschranken[11].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[13].aktiv = 1;
-  Alle_Lichtschranken[15].aktiv = 1;
-  Alle_Lichtschranken[16].aktiv = 1;
+{ /*
+   Alle_Lichtschranken[0].aktiv = 1;
+   Alle_Lichtschranken[1].aktiv = 1;
+   Alle_Lichtschranken[2].aktiv = 1;
+   Alle_Lichtschranken[3].aktiv = 1;
+   Alle_Lichtschranken[4].aktiv = 1;
+   Alle_Lichtschranken[5].aktiv = 1;
+   Alle_Lichtschranken[6].aktiv = 1;
+   Alle_Lichtschranken[7].aktiv = 1;
+   Alle_Lichtschranken[8].aktiv = 1;
+   Alle_Lichtschranken[9].aktiv = 1;
+   Alle_Lichtschranken[10].aktiv = 1;
+   Alle_Lichtschranken[11].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[13].aktiv = 1;
+   Alle_Lichtschranken[15].aktiv = 1;
+   Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void setLevelTwo()
-{
-  Alle_Lichtschranken[0].aktiv = 1;
-  Alle_Lichtschranken[1].aktiv = 1;
-  Alle_Lichtschranken[2].aktiv = 1;
-  Alle_Lichtschranken[3].aktiv = 1;
-  Alle_Lichtschranken[4].aktiv = 1;
-  Alle_Lichtschranken[5].aktiv = 1;
-  Alle_Lichtschranken[6].aktiv = 1;
-  Alle_Lichtschranken[7].aktiv = 1;
-  Alle_Lichtschranken[8].aktiv = 1;
-  Alle_Lichtschranken[9].aktiv = 1;
-  Alle_Lichtschranken[10].aktiv = 1;
-  Alle_Lichtschranken[11].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[13].aktiv = 1;
-  Alle_Lichtschranken[15].aktiv = 1;
-  Alle_Lichtschranken[16].aktiv = 1;
+{ /*
+   Alle_Lichtschranken[0].aktiv = 1;
+   Alle_Lichtschranken[1].aktiv = 1;
+   Alle_Lichtschranken[2].aktiv = 1;
+   Alle_Lichtschranken[3].aktiv = 1;
+   Alle_Lichtschranken[4].aktiv = 1;
+   Alle_Lichtschranken[5].aktiv = 1;
+   Alle_Lichtschranken[6].aktiv = 1;
+   Alle_Lichtschranken[7].aktiv = 1;
+   Alle_Lichtschranken[8].aktiv = 1;
+   Alle_Lichtschranken[9].aktiv = 1;
+   Alle_Lichtschranken[10].aktiv = 1;
+   Alle_Lichtschranken[11].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[12].aktiv = 1;
+   Alle_Lichtschranken[13].aktiv = 1;
+   Alle_Lichtschranken[15].aktiv = 1;
+   Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void levelSwtich()
@@ -489,6 +490,7 @@ void loop()
     Blink_Taster[1].currentState = LOW;
     Blink_Taster[2].currentState = LOW;
     // Modus nur setzten und später noch ne switch?
+    // weil blink zero wird immer wieder ausgeführt...
     setBlinkZero();
     break;
   case 1:
