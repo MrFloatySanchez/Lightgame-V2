@@ -31,7 +31,7 @@ Serial.println ();
  */
 
 // define MONITOR auskommentieren um den seriellen Monitor auszulassen
-// #define MONITOR
+#define MONITOR
 
 #include <Arduino.h>
 
@@ -110,14 +110,10 @@ struct Modul_Taster
 };
 
 Modul_Taster Level_Taster[] = {
-  Modul_Taster(53, 52),
-  Modul_Taster(51, 50),
-  Modul_Taster(49, 48),
+  Modul_Taster(47, 46), Modul_Taster(45, 44), Modul_Taster(49, 48),
+  Modul_Taster(53, 52), Modul_Taster(51, 50),
 };
-Modul_Taster Blink_Taster[] = {
-  Modul_Taster(47, 46),
-  Modul_Taster(45, 44),
-};
+// Modul_Taster Blink_Taster[] = {};
 
 struct Modul_Lichtschranke
 {
@@ -160,6 +156,7 @@ Modul_Lichtschranke Alle_Lichtschranken[] = {
   Modul_Lichtschranke(20, A14),
   Modul_Lichtschranke(19, A13),
   Modul_Lichtschranke(18, A12),
+
 };
 
 void
@@ -193,10 +190,12 @@ setup()
     pinMode(Level.Signal_PIN, INPUT_PULLUP);
     pinMode(Level.Led_PIN, OUTPUT);
   }
+/* 
   for (Modul_Taster& Blink : Blink_Taster) {
     pinMode(Blink.Signal_PIN, INPUT_PULLUP);
     pinMode(Blink.Led_PIN, OUTPUT);
   }
+   */
   for (Modul_Lichtschranke& lichtschranke : Alle_Lichtschranken) {
     pinMode(lichtschranke.Signal_PIN, INPUT_PULLUP);
     pinMode(lichtschranke.Led_PIN, OUTPUT);
@@ -216,18 +215,35 @@ loop()
       Level_Taster[0].currentState = false;
       Level_Taster[1].currentState = false;
       Level_Taster[2].currentState = false;
+      Level_Taster[3].currentState = false;
+      Level_Taster[4].currentState = false;
       Level.changeState(true);
     }
+#ifdef MONITOR
+    Serial.print(Level.Signal_PIN);
+    Serial.print(" > ");
+    Serial.print(Level.currentState);
+    Serial.print(" | ");
+#endif
   }
-
+/* 
   for (Modul_Taster& Blink : Blink_Taster) {
     if (Blink.checkForTastendruck()) {
-      Blink_Taster[0].currentState = false;
-      Blink_Taster[1].currentState = false;
-      Blink_Taster[2].currentState = false;
+      //   Blink_Taster[0].currentState = false;
+      //   Blink_Taster[1].currentState = false;
+      //   Blink_Taster[2].currentState = false;
       Blink.changeState(HIGH);
     }
-  }
+#ifdef MONITOR
+    Serial.print(Blink.Signal_PIN);
+    Serial.print(" > ");
+    Serial.print(Blink.currentState);
+    Serial.print(" | ");
+#endif
+  } */
+#ifdef MONITOR
+  Serial.println();
+#endif
 
   for (Modul_Lichtschranke& lichtschranke : Alle_Lichtschranken) {
     if (lichtschranke.checkForUnterbrechung() == true) {
@@ -258,11 +274,11 @@ loop()
   for (Modul_Taster& Level : Level_Taster) {
     digitalWrite(Level.Led_PIN, Level.currentState);
   }
-
+/* 
   for (Modul_Taster& Blink : Blink_Taster) {
     digitalWrite(Blink.Led_PIN, Blink.currentState);
   }
-
+ */
   for (Modul_Lichtschranke& lichtschranke : Alle_Lichtschranken) {
     lichtschranke.light();
     digitalWrite(lichtschranke.Led_PIN, lichtschranke.led_state);
@@ -270,17 +286,4 @@ loop()
 
   digitalWrite(Alarm_Licht_Pin, Alarm_Licht);
   digitalWrite(Alarm_Ton_Pin, Alarm_Ton);
-
-#ifdef MONITOR
-  Serial.print(global_Alarm);
-  Serial.print(" > ");
-  Serial.print();
-  Serial.print(" - ");
-  Serial.print();
-  Serial.print(" | ");
-#endif
-
-#ifdef MONITOR
-  Serial.println();
-#endif
 }
