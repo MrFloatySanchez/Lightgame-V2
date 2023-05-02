@@ -36,7 +36,7 @@ Serial.println ();
     Serial.print(Level.currentState);
     Serial.print(" | ");
 #endif */
-/* 
+/*
 #ifdef MONITOR
       Serial.print(Blink.Signal_PIN);
       Serial.print(" > ");
@@ -93,8 +93,8 @@ const unsigned long BlinkDuration = 3000;
 
 struct Modul_Taster
 {
-  const int Signal_PIN{}; // INPUT
-  const int Led_PIN{};    // OUTPUT
+  const int Signal_PIN{};
+  const int Led_PIN{};
   const int id{};
 
   bool currentState{};
@@ -306,7 +306,7 @@ void setLevelTwo()
 
 void levelSwtich(bool force_setLevel = false)
 {
-  if (current_level != last_level || force_setLevel)
+  if ((current_level != last_level) || force_setLevel)
   {
     switch (current_level)
     {
@@ -404,7 +404,52 @@ void setBlinkOne()
 
 void setBlinkTwo()
 {
-  // jede Zweite lichtschranke 'an'
+  // Tor 1
+  if (currenTime - blink_last_time[ersteTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[0].aktiv = newState;
+    Alle_Lichtschranken[1].aktiv = !newState;
+    Alle_Lichtschranken[2].aktiv = newState;
+    newState != newState;
+    blink_last_time[ersteTor] = currenTime;
+  }
+
+  // Tor 2
+  if (currenTime - blink_last_time[zweitesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[3].aktiv = !newState;
+    Alle_Lichtschranken[4].aktiv = newState;
+    Alle_Lichtschranken[5].aktiv = !newState;
+    Alle_Lichtschranken[6].aktiv = newState;
+    newState != newState;
+    blink_last_time[zweitesTor] = currenTime;
+  }
+  // Tor 3
+  if (currenTime - blink_last_time[drittesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[7].aktiv = !newState;
+    Alle_Lichtschranken[8].aktiv = newState;
+    Alle_Lichtschranken[9].aktiv = !newState;
+    Alle_Lichtschranken[10].aktiv = newState;
+    Alle_Lichtschranken[11].aktiv = !newState;
+    newState != newState;
+    blink_last_time[drittesTor] = currenTime;
+  }
+  // Tor 4
+  if (currenTime - blink_last_time[viertesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[12].aktiv = newState;
+    Alle_Lichtschranken[13].aktiv = !newState;
+    Alle_Lichtschranken[14].aktiv = newState;
+    Alle_Lichtschranken[15].aktiv = !newState;
+    Alle_Lichtschranken[16].aktiv = newState;
+    newState != newState;
+    blink_last_time[viertesTor] = currenTime;
+  }
 }
 
 void setup()
@@ -436,6 +481,7 @@ void setup()
 
 void loop()
 {
+  /* Lesen */
   currenTime = millis();
 
   for (Modul_Taster &Level : Level_Taster)
@@ -456,7 +502,7 @@ void loop()
 
   for (Modul_Lichtschranke &lichtschranke : Alle_Lichtschranken)
   {
-    if (lichtschranke.checkForUnterbrechung() == true)
+    if (lichtschranke.checkForUnterbrechung())
     {
       lichtschranke.flash = 1;
       if (global_Alarm == off)
@@ -466,6 +512,8 @@ void loop()
       }
     }
   }
+
+  /* Auswerten */
 
   if (global_Alarm == on && (currenTime - Alarm_last_time > AlarmDuration))
   {
@@ -512,7 +560,6 @@ void loop()
       current_blink = 0;
       break;
     }
-
     blink_last_time[ersteTor] = currenTime;
     blink_last_time[zweitesTor] = currenTime + (1 * offsetBetweenGates);
     blink_last_time[drittesTor] = currenTime + (2 * offsetBetweenGates);
@@ -536,6 +583,8 @@ void loop()
 
   levelSwtich();
   alarmSwitch();
+
+  /* Schalten */
 
   for (Modul_Taster &Level : Level_Taster)
   {
