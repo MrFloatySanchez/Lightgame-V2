@@ -402,6 +402,54 @@ void setBlinkOne()
   }
 }
 
+void blinkSwitch()
+{
+  if (current_blink != last_blink)
+  {
+    switch (current_blink)
+    {
+    case 0:
+      Blink_Taster[0].currentState = HIGH;
+      Blink_Taster[1].currentState = LOW;
+      Blink_Taster[2].currentState = LOW;
+      levelSwtich(true);
+      break;
+    case 1:
+      Blink_Taster[0].currentState = LOW;
+      Blink_Taster[1].currentState = HIGH;
+      Blink_Taster[2].currentState = LOW;
+      break;
+    case 2:
+      Blink_Taster[0].currentState = LOW;
+      Blink_Taster[1].currentState = LOW;
+      Blink_Taster[2].currentState = HIGH;
+      break;
+    default:
+      current_blink = 0;
+      break;
+    }
+    blink_last_time[ersteTor] = currenTime;
+    blink_last_time[zweitesTor] = currenTime + (1 * offsetBetweenGates);
+    blink_last_time[drittesTor] = currenTime + (2 * offsetBetweenGates);
+    blink_last_time[viertesTor] = currenTime + (3 * offsetBetweenGates);
+  }
+  switch (current_blink)
+  {
+  case 0:
+    break;
+  case 1:
+    setBlinkOne();
+    break;
+  case 2:
+    setBlinkTwo();
+    break;
+  default:
+    current_blink = 0;
+    break;
+  }
+  last_blink = current_blink;
+}
+
 void setBlinkTwo()
 {
   // Tor 1
@@ -414,7 +462,6 @@ void setBlinkTwo()
     newState != newState;
     blink_last_time[ersteTor] = currenTime;
   }
-
   // Tor 2
   if (currenTime - blink_last_time[zweitesTor] > BlinkDuration)
   {
@@ -536,51 +583,7 @@ void loop()
     }
   }
 
-  if (current_blink != last_blink)
-  {
-    switch (current_blink)
-    {
-    case 0:
-      Blink_Taster[0].currentState = HIGH;
-      Blink_Taster[1].currentState = LOW;
-      Blink_Taster[2].currentState = LOW;
-      levelSwtich(true);
-      break;
-    case 1:
-      Blink_Taster[0].currentState = LOW;
-      Blink_Taster[1].currentState = HIGH;
-      Blink_Taster[2].currentState = LOW;
-      break;
-    case 2:
-      Blink_Taster[0].currentState = LOW;
-      Blink_Taster[1].currentState = LOW;
-      Blink_Taster[2].currentState = HIGH;
-      break;
-    default:
-      current_blink = 0;
-      break;
-    }
-    blink_last_time[ersteTor] = currenTime;
-    blink_last_time[zweitesTor] = currenTime + (1 * offsetBetweenGates);
-    blink_last_time[drittesTor] = currenTime + (2 * offsetBetweenGates);
-    blink_last_time[viertesTor] = currenTime + (3 * offsetBetweenGates);
-  }
-  switch (current_blink)
-  {
-  case 0:
-    break;
-  case 1:
-    setBlinkOne();
-    break;
-  case 2:
-    setBlinkTwo();
-    break;
-  default:
-    current_blink = 0;
-    break;
-  }
-  last_blink = current_blink;
-
+  blinkSwitch();
   levelSwtich();
   alarmSwitch();
 
@@ -590,18 +593,15 @@ void loop()
   {
     digitalWrite(Level.Led_PIN, Level.currentState);
   }
-
   for (Modul_Taster &Blink : Blink_Taster)
   {
     digitalWrite(Blink.Led_PIN, Blink.currentState);
   }
-
   for (Modul_Lichtschranke &lichtschranke : Alle_Lichtschranken)
   {
     lichtschranke.light();
     digitalWrite(lichtschranke.Led_PIN, lichtschranke.led_state);
   }
-
   digitalWrite(Alarm_Licht_Pin, Alarm_Licht);
   digitalWrite(Alarm_Ton_Pin, Alarm_Ton);
 }
