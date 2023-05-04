@@ -10,41 +10,16 @@ Serial.print (" | ");
 Serial.println ();
 #endif
 
-#ifdef MONITOR
-int test[5] = { 10, 11, 12, 13, 14 };
-int i = 0;
-for (auto testNumber : test)
-  {
-    Serial.print (i);
-    Serial.print (" > ");
-    Serial.print (testNumber);
-    Serial.print (" | ");
-    ++i;
-  }
-Serial.println ();
-#endif
+
 */
 /*
   ToDo
   - Exclusiv-Logik Taster
     - Via ID Kontatante?
  */
-/*
-#ifdef MONITOR
-  Serial.print(Level.Signal_PIN);
-    Serial.print(" > ");
-    Serial.print(Level.currentState);
-    Serial.print(" | ");
-#endif */
-/*
-#ifdef MONITOR
-      Serial.print(Blink.Signal_PIN);
-      Serial.print(" > ");
-      Serial.print(Blink.currentState);
-      Serial.print(" | ");
-#endif */
+
 // define MONITOR auskommentieren um den seriellen Monitor auszulassen
-#define MONITOR
+// #define MONITOR
 
 #include <Arduino.h>
 
@@ -87,7 +62,7 @@ unsigned long Alarm_last_time;
 unsigned long blink_last_time[Anzahl_Tore];
 
 const unsigned long flash_duration = 50;
-const unsigned long debounce_time = 50;
+const unsigned long debounce_time = 10;
 const unsigned long AlarmDuration = 3000;
 const unsigned long BlinkDuration = 3000;
 
@@ -122,7 +97,6 @@ struct Modul_Taster
 
     if (currenTime - lastTimePressed > debounce_time)
     {
-
       if (reading != ButtonState)
       {
         ButtonState = reading;
@@ -154,6 +128,14 @@ Modul_Taster Level_Taster[] = {
     Modul_Taster(45, 44, 1),
     Modul_Taster(49, 48, 2),
 };
+
+/*
+47 > Blau
+45 > Grün
+51 > Rot
+53 > Gelb
+49 ? Weis
+ */
 
 Modul_Taster Blink_Taster[] = {
     Modul_Taster(43, 42, 0), // Taster gibt es nicht!
@@ -213,12 +195,34 @@ struct Modul_Lichtschranke
 };
 
 Modul_Lichtschranke Alle_Lichtschranken[] = {
-    /*
-Modul_Lichtschranke(21, A15),
-Modul_Lichtschranke(20, A14),
-Modul_Lichtschranke(19, A13),
-Modul_Lichtschranke(18, A12), */
+    Modul_Lichtschranke(21, A15),
+    Modul_Lichtschranke(20, A14),
+    Modul_Lichtschranke(19, A13),
+    Modul_Lichtschranke(18, A12),
 };
+
+struct Modul_Trigger
+{
+  const int Signal{};
+
+  unsigned long last_trigger;
+  const unsigned long triggerDelay = 2000;
+
+  Modul_Trigger(int Pin) : Signal(Pin) {}
+
+  bool
+  lesen()
+  {
+    bool reading = digitalRead(Signal);
+
+    if (currenTime - last_trigger > triggerDelay)
+      return reading;
+    else
+      return false;
+  }
+};
+
+Modul_Trigger trigger = 22;
 
 void alarmSwitch()
 {
@@ -242,66 +246,66 @@ void alarmSwitch()
 }
 
 void setLevelZero()
-{ /*
-   Alle_Lichtschranken[0].aktiv = 1;
-   Alle_Lichtschranken[1].aktiv = 1;
-   Alle_Lichtschranken[2].aktiv = 1;
-   Alle_Lichtschranken[3].aktiv = 1;
-   Alle_Lichtschranken[4].aktiv = 1;
-   Alle_Lichtschranken[5].aktiv = 1;
-   Alle_Lichtschranken[6].aktiv = 1;
-   Alle_Lichtschranken[7].aktiv = 1;
-   Alle_Lichtschranken[8].aktiv = 1;
-   Alle_Lichtschranken[9].aktiv = 1;
-   Alle_Lichtschranken[10].aktiv = 1;
-   Alle_Lichtschranken[11].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[13].aktiv = 1;
-   Alle_Lichtschranken[15].aktiv = 1;
-   Alle_Lichtschranken[16].aktiv = 1; */
+{
+  Alle_Lichtschranken[0].aktiv = 1;
+  Alle_Lichtschranken[1].aktiv = 1;
+  Alle_Lichtschranken[2].aktiv = 1;
+  Alle_Lichtschranken[3].aktiv = 1;
+  /*  Alle_Lichtschranken[4].aktiv = 1;
+    Alle_Lichtschranken[5].aktiv = 1;
+    Alle_Lichtschranken[6].aktiv = 1;
+    Alle_Lichtschranken[7].aktiv = 1;
+    Alle_Lichtschranken[8].aktiv = 1;
+    Alle_Lichtschranken[9].aktiv = 1;
+    Alle_Lichtschranken[10].aktiv = 1;
+    Alle_Lichtschranken[11].aktiv = 1;
+    Alle_Lichtschranken[12].aktiv = 1;
+    Alle_Lichtschranken[12].aktiv = 1;
+    Alle_Lichtschranken[13].aktiv = 1;
+    Alle_Lichtschranken[15].aktiv = 1;
+    Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void setLevelOne()
-{ /*
-   Alle_Lichtschranken[0].aktiv = 1;
-   Alle_Lichtschranken[1].aktiv = 1;
-   Alle_Lichtschranken[2].aktiv = 1;
-   Alle_Lichtschranken[3].aktiv = 1;
-   Alle_Lichtschranken[4].aktiv = 1;
-   Alle_Lichtschranken[5].aktiv = 1;
-   Alle_Lichtschranken[6].aktiv = 1;
-   Alle_Lichtschranken[7].aktiv = 1;
-   Alle_Lichtschranken[8].aktiv = 1;
-   Alle_Lichtschranken[9].aktiv = 1;
-   Alle_Lichtschranken[10].aktiv = 1;
-   Alle_Lichtschranken[11].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[13].aktiv = 1;
-   Alle_Lichtschranken[15].aktiv = 1;
-   Alle_Lichtschranken[16].aktiv = 1; */
+{
+  Alle_Lichtschranken[0].aktiv = 1;
+  Alle_Lichtschranken[1].aktiv = 1;
+  Alle_Lichtschranken[2].aktiv = 1;
+  Alle_Lichtschranken[3].aktiv = 1;
+  /*    Alle_Lichtschranken[4].aktiv = 1;
+     Alle_Lichtschranken[5].aktiv = 1;
+     Alle_Lichtschranken[6].aktiv = 1;
+     Alle_Lichtschranken[7].aktiv = 1;
+     Alle_Lichtschranken[8].aktiv = 1;
+     Alle_Lichtschranken[9].aktiv = 1;
+     Alle_Lichtschranken[10].aktiv = 1;
+     Alle_Lichtschranken[11].aktiv = 1;
+     Alle_Lichtschranken[12].aktiv = 1;
+     Alle_Lichtschranken[12].aktiv = 1;
+     Alle_Lichtschranken[13].aktiv = 1;
+     Alle_Lichtschranken[15].aktiv = 1;
+     Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void setLevelTwo()
-{ /*
-   Alle_Lichtschranken[0].aktiv = 1;
-   Alle_Lichtschranken[1].aktiv = 1;
-   Alle_Lichtschranken[2].aktiv = 1;
-   Alle_Lichtschranken[3].aktiv = 1;
-   Alle_Lichtschranken[4].aktiv = 1;
-   Alle_Lichtschranken[5].aktiv = 1;
-   Alle_Lichtschranken[6].aktiv = 1;
-   Alle_Lichtschranken[7].aktiv = 1;
-   Alle_Lichtschranken[8].aktiv = 1;
-   Alle_Lichtschranken[9].aktiv = 1;
-   Alle_Lichtschranken[10].aktiv = 1;
-   Alle_Lichtschranken[11].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[12].aktiv = 1;
-   Alle_Lichtschranken[13].aktiv = 1;
-   Alle_Lichtschranken[15].aktiv = 1;
-   Alle_Lichtschranken[16].aktiv = 1; */
+{
+  Alle_Lichtschranken[0].aktiv = 1;
+  Alle_Lichtschranken[1].aktiv = 1;
+  Alle_Lichtschranken[2].aktiv = 1;
+  Alle_Lichtschranken[3].aktiv = 1;
+  /*    Alle_Lichtschranken[4].aktiv = 1;
+     Alle_Lichtschranken[5].aktiv = 1;
+     Alle_Lichtschranken[6].aktiv = 1;
+     Alle_Lichtschranken[7].aktiv = 1;
+     Alle_Lichtschranken[8].aktiv = 1;
+     Alle_Lichtschranken[9].aktiv = 1;
+     Alle_Lichtschranken[10].aktiv = 1;
+     Alle_Lichtschranken[11].aktiv = 1;
+     Alle_Lichtschranken[12].aktiv = 1;
+     Alle_Lichtschranken[12].aktiv = 1;
+     Alle_Lichtschranken[13].aktiv = 1;
+     Alle_Lichtschranken[15].aktiv = 1;
+     Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void levelSwtich(bool force_setLevel = false)
@@ -343,19 +347,19 @@ void setBlinkZero()
   Alle_Lichtschranken[1].aktiv = 1;
   Alle_Lichtschranken[2].aktiv = 1;
   Alle_Lichtschranken[3].aktiv = 1;
-  Alle_Lichtschranken[4].aktiv = 1;
-  Alle_Lichtschranken[5].aktiv = 1;
-  Alle_Lichtschranken[6].aktiv = 1;
-  Alle_Lichtschranken[7].aktiv = 1;
-  Alle_Lichtschranken[8].aktiv = 1;
-  Alle_Lichtschranken[9].aktiv = 1;
-  Alle_Lichtschranken[10].aktiv = 1;
-  Alle_Lichtschranken[11].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[12].aktiv = 1;
-  Alle_Lichtschranken[13].aktiv = 1;
-  Alle_Lichtschranken[15].aktiv = 1;
-  Alle_Lichtschranken[16].aktiv = 1;
+  /*   Alle_Lichtschranken[4].aktiv = 1;
+    Alle_Lichtschranken[5].aktiv = 1;
+    Alle_Lichtschranken[6].aktiv = 1;
+    Alle_Lichtschranken[7].aktiv = 1;
+    Alle_Lichtschranken[8].aktiv = 1;
+    Alle_Lichtschranken[9].aktiv = 1;
+    Alle_Lichtschranken[10].aktiv = 1;
+    Alle_Lichtschranken[11].aktiv = 1;
+    Alle_Lichtschranken[12].aktiv = 1;
+    Alle_Lichtschranken[12].aktiv = 1;
+    Alle_Lichtschranken[13].aktiv = 1;
+    Alle_Lichtschranken[15].aktiv = 1;
+    Alle_Lichtschranken[16].aktiv = 1; */
 }
 
 void setBlinkOne()
@@ -373,31 +377,80 @@ void setBlinkOne()
   if (currenTime - blink_last_time[zweitesTor] > BlinkDuration)
   {
     Alle_Lichtschranken[3].aktiv = !Alle_Lichtschranken[3].aktiv;
-    Alle_Lichtschranken[4].aktiv = !Alle_Lichtschranken[4].aktiv;
-    Alle_Lichtschranken[5].aktiv = !Alle_Lichtschranken[5].aktiv;
-    Alle_Lichtschranken[6].aktiv = !Alle_Lichtschranken[6].aktiv;
+    // Alle_Lichtschranken[4].aktiv = !Alle_Lichtschranken[4].aktiv;
+    // Alle_Lichtschranken[5].aktiv = !Alle_Lichtschranken[5].aktiv;
+    // Alle_Lichtschranken[6].aktiv = !Alle_Lichtschranken[6].aktiv;
     blink_last_time[zweitesTor] = currenTime;
   }
 
   // Tor 3
   if (currenTime - blink_last_time[drittesTor] > BlinkDuration)
   {
-    Alle_Lichtschranken[7].aktiv = !Alle_Lichtschranken[7].aktiv;
-    Alle_Lichtschranken[8].aktiv = !Alle_Lichtschranken[8].aktiv;
-    Alle_Lichtschranken[9].aktiv = !Alle_Lichtschranken[9].aktiv;
-    Alle_Lichtschranken[10].aktiv = !Alle_Lichtschranken[10].aktiv;
-    Alle_Lichtschranken[11].aktiv = !Alle_Lichtschranken[11].aktiv;
+    // Alle_Lichtschranken[7].aktiv = !Alle_Lichtschranken[7].aktiv;
+    // Alle_Lichtschranken[8].aktiv = !Alle_Lichtschranken[8].aktiv;
+    // Alle_Lichtschranken[9].aktiv = !Alle_Lichtschranken[9].aktiv;
+    // Alle_Lichtschranken[10].aktiv = !Alle_Lichtschranken[10].aktiv;
+    // Alle_Lichtschranken[11].aktiv = !Alle_Lichtschranken[11].aktiv;
     blink_last_time[drittesTor] = currenTime;
   }
 
   // Tor 4
   if (currenTime - blink_last_time[viertesTor] > BlinkDuration)
   {
-    Alle_Lichtschranken[12].aktiv = !Alle_Lichtschranken[12].aktiv;
-    Alle_Lichtschranken[13].aktiv = !Alle_Lichtschranken[13].aktiv;
-    Alle_Lichtschranken[14].aktiv = !Alle_Lichtschranken[14].aktiv;
-    Alle_Lichtschranken[15].aktiv = !Alle_Lichtschranken[15].aktiv;
-    Alle_Lichtschranken[16].aktiv = !Alle_Lichtschranken[16].aktiv;
+    // Alle_Lichtschranken[12].aktiv = !Alle_Lichtschranken[12].aktiv;
+    // Alle_Lichtschranken[13].aktiv = !Alle_Lichtschranken[13].aktiv;
+    // Alle_Lichtschranken[14].aktiv = !Alle_Lichtschranken[14].aktiv;
+    // Alle_Lichtschranken[15].aktiv = !Alle_Lichtschranken[15].aktiv;
+    // Alle_Lichtschranken[16].aktiv = !Alle_Lichtschranken[16].aktiv;
+    blink_last_time[viertesTor] = currenTime;
+  }
+}
+
+void setBlinkTwo()
+{
+  // Tor 1
+  if (currenTime - blink_last_time[ersteTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[0].aktiv = newState;
+    Alle_Lichtschranken[1].aktiv = !newState;
+    Alle_Lichtschranken[2].aktiv = newState;
+    newState = !newState;
+    blink_last_time[ersteTor] = currenTime;
+  }
+  // Tor 2/*
+  if (currenTime - blink_last_time[zweitesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    Alle_Lichtschranken[3].aktiv = !newState;
+    // Alle_Lichtschranken[4].aktiv = newState;
+    // Alle_Lichtschranken[5].aktiv = !newState;
+    // Alle_Lichtschranken[6].aktiv = newState;
+    newState = !newState;
+    blink_last_time[zweitesTor] = currenTime;
+  }
+  // Tor 3
+  if (currenTime - blink_last_time[drittesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    // Alle_Lichtschranken[7].aktiv = !newState;
+    // Alle_Lichtschranken[8].aktiv = newState;
+    // Alle_Lichtschranken[9].aktiv = !newState;
+    // Alle_Lichtschranken[10].aktiv = newState;
+    // Alle_Lichtschranken[11].aktiv = !newState;
+    newState = !newState;
+    blink_last_time[drittesTor] = currenTime;
+  }
+  // Tor 4
+  if (currenTime - blink_last_time[viertesTor] > BlinkDuration)
+  {
+    static bool newState = false;
+    // Alle_Lichtschranken[12].aktiv = newState;
+    // Alle_Lichtschranken[13].aktiv = !newState;
+    // Alle_Lichtschranken[14].aktiv = newState;
+    // Alle_Lichtschranken[15].aktiv = !newState;
+    // Alle_Lichtschranken[16].aktiv = newState;
+    newState = !newState;
     blink_last_time[viertesTor] = currenTime;
   }
 }
@@ -412,7 +465,8 @@ void blinkSwitch()
       Blink_Taster[0].currentState = HIGH;
       Blink_Taster[1].currentState = LOW;
       Blink_Taster[2].currentState = LOW;
-      levelSwtich(true);
+      // levelSwtich(true);
+      last_level = 3; // garantiert einen setLevel
       break;
     case 1:
       Blink_Taster[0].currentState = LOW;
@@ -432,7 +486,8 @@ void blinkSwitch()
     blink_last_time[zweitesTor] = currenTime + (1 * offsetBetweenGates);
     blink_last_time[drittesTor] = currenTime + (2 * offsetBetweenGates);
     blink_last_time[viertesTor] = currenTime + (3 * offsetBetweenGates);
-  }
+  } // if
+
   switch (current_blink)
   {
   case 0:
@@ -448,55 +503,6 @@ void blinkSwitch()
     break;
   }
   last_blink = current_blink;
-}
-
-void setBlinkTwo()
-{
-  // Tor 1
-  if (currenTime - blink_last_time[ersteTor] > BlinkDuration)
-  {
-    static bool newState = false;
-    Alle_Lichtschranken[0].aktiv = newState;
-    Alle_Lichtschranken[1].aktiv = !newState;
-    Alle_Lichtschranken[2].aktiv = newState;
-    newState != newState;
-    blink_last_time[ersteTor] = currenTime;
-  }
-  // Tor 2
-  if (currenTime - blink_last_time[zweitesTor] > BlinkDuration)
-  {
-    static bool newState = false;
-    Alle_Lichtschranken[3].aktiv = !newState;
-    Alle_Lichtschranken[4].aktiv = newState;
-    Alle_Lichtschranken[5].aktiv = !newState;
-    Alle_Lichtschranken[6].aktiv = newState;
-    newState != newState;
-    blink_last_time[zweitesTor] = currenTime;
-  }
-  // Tor 3
-  if (currenTime - blink_last_time[drittesTor] > BlinkDuration)
-  {
-    static bool newState = false;
-    Alle_Lichtschranken[7].aktiv = !newState;
-    Alle_Lichtschranken[8].aktiv = newState;
-    Alle_Lichtschranken[9].aktiv = !newState;
-    Alle_Lichtschranken[10].aktiv = newState;
-    Alle_Lichtschranken[11].aktiv = !newState;
-    newState != newState;
-    blink_last_time[drittesTor] = currenTime;
-  }
-  // Tor 4
-  if (currenTime - blink_last_time[viertesTor] > BlinkDuration)
-  {
-    static bool newState = false;
-    Alle_Lichtschranken[12].aktiv = newState;
-    Alle_Lichtschranken[13].aktiv = !newState;
-    Alle_Lichtschranken[14].aktiv = newState;
-    Alle_Lichtschranken[15].aktiv = !newState;
-    Alle_Lichtschranken[16].aktiv = newState;
-    newState != newState;
-    blink_last_time[viertesTor] = currenTime;
-  }
 }
 
 void setup()
@@ -537,6 +543,14 @@ void loop()
     {
       current_level = Level.id;
     }
+#ifdef MONITOR
+    Serial.print(Level.Signal_PIN);
+    Serial.print(" > ");
+    Serial.print(Level.currentState);
+    Serial.print(" - ");
+    Serial.print(Level.reading);
+    Serial.print(" | ");
+#endif
   }
 
   for (Modul_Taster &Blink : Blink_Taster)
@@ -545,8 +559,22 @@ void loop()
     {
       current_blink = Blink.id;
     }
+#ifdef MONITOR
+    Serial.print(Blink.Signal_PIN);
+    Serial.print(" > ");
+    Serial.print(Blink.currentState);
+    Serial.print(" - ");
+    Serial.print(Blink.reading);
+    Serial.print(" | ");
+#endif
   }
-
+#ifdef MONITOR
+  Serial.print(current_level);
+  Serial.print(" | ");
+  Serial.print(current_blink);
+  Serial.print(" | ");
+  Serial.println();
+#endif
   for (Modul_Lichtschranke &lichtschranke : Alle_Lichtschranken)
   {
     if (lichtschranke.checkForUnterbrechung())
@@ -584,7 +612,7 @@ void loop()
   }
 
   blinkSwitch();
-  levelSwtich();
+  levelSwtich(true);
   alarmSwitch();
 
   /* Schalten */
