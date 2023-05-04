@@ -68,7 +68,7 @@ struct Modul_Taster
   const int Led_PIN{};
   const int id{};
 
-  bool led_state{};
+  bool led_state{}; // 'current State'
   bool button_state{};
   bool new_state{};
   bool last_state{};
@@ -78,6 +78,11 @@ struct Modul_Taster
       : Signal_PIN(pinSignal), Led_PIN(pinLed), id(nummer)
   {
   }
+
+  /*
+    led_state und button_state das gleiche machen lassen?
+    -> led + button = current_state
+   */
 
   bool
   checkForTastendruck()
@@ -94,12 +99,11 @@ struct Modul_Taster
     {
       if (new_state != button_state)
       {
-        button_state = new_state; // logik beim lesen!
+        button_state = new_state;
 
         if (button_state == LOW)
         {
-          led_state = !led_state; // ? konflikt mit letzten operation!
-          // und logik beim lesen!
+          led_state = !led_state; // logik beim lesen?
           // ? Taster_Changed = 1;
           return true;
         }
@@ -115,6 +119,8 @@ struct Modul_Taster
     led_state = input_state;
   }
   /*
+  Change State nur status-varriable setzten?
+  -> write()
     void
     changeState()
     { // unsused ATM
@@ -161,7 +167,7 @@ struct Modul_Lichtschranke
 
   void
   light()
-  {
+  { // add if (blink)
     if (flash)
     {
       if (currentTime - flash_last_time > flash_duration)
@@ -180,7 +186,7 @@ struct Modul_Lichtschranke
   bool
   checkForUnterbrechung()
   {
-    if (current_state == 1)
+    if (current_state == 1) // logik beim lesen!
       new_state = !digitalRead(Signal_PIN);
     else
       new_state = false;
