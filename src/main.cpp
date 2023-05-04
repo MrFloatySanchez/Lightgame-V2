@@ -103,7 +103,7 @@ struct Modul_Taster
 
         if (button_state == LOW)
         {
-          led_state = !led_state; // logik beim lesen?
+          // led_state = !led_state; // logik beim lesen?
           // ? Taster_Changed = 1;
           return true;
         }
