@@ -238,10 +238,25 @@ void alarmSwitch()
   case Alarm_Status::off:
     alarm_ton = HIGH;
     alarm_licht = HIGH;
+    // if (currentTime - alarm_last_time > alarm_duration)
+    //   global_Alarm = silent;
     break;
   case Alarm_Status::on:
     alarm_ton = LOW;
-    alarm_licht = LOW;    
+    alarm_licht = LOW;
+    // global_Alarm = off;
+    // for (Modul_Lichtschranke &ls : Alle_Lichtschranken)
+    // {
+    //   if (ls.new_state)
+    //   {
+    //     global_Alarm = silent;
+    //     ls.flash = 1;
+    //   }
+    //   else
+    //   {
+    //     ls.flash = 0;
+    //   }
+    // }
     break;
   case Alarm_Status::silent:
     alarm_ton = HIGH;
