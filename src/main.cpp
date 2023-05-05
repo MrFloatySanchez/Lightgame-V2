@@ -40,6 +40,13 @@ enum Alarm_Status
 };
 Alarm_Status global_Alarm = Alarm_Status::off;
 
+enum Game_States
+{
+  waiting,
+  playing,
+  alarm,
+} game_state;
+
 const int Alarm_Licht_Pin = 12;
 const int Alarm_Ton_Pin = 13;
 
@@ -234,7 +241,7 @@ void alarmSwitch()
     break;
   case Alarm_Status::on:
     alarm_ton = LOW;
-    alarm_licht = LOW;
+    alarm_licht = LOW;    
     break;
   case Alarm_Status::silent:
     alarm_ton = HIGH;
@@ -521,12 +528,35 @@ void setup()
   pinMode(trigger.Signal, INPUT_PULLUP);
   pinMode(Alarm_Licht_Pin, OUTPUT);
   pinMode(Alarm_Ton_Pin, OUTPUT);
+  game_state = Game_States::waiting;
 }
 
 void loop()
 {
   /* Lesen */
   currentTime = millis();
+
+  if (trigger.lesen())
+  {
+    unsigned long timer_start;
+    unsigned long timer_end;
+    unsigned long timer_delta;
+
+    if (game_state == waiting)
+    {
+      timer_start = currentTime;
+      game_state = playing;
+    }
+
+    if (game_state == playing)
+    {
+      timer_end = current_level;
+      timer_delta = timer_end - timer_start;
+#ifdef MONITOR
+      Serial.print(timer_delta);
+#endif
+    }
+  }
 
   for (Modul_Taster &lvl : Level_Taster)
   {
