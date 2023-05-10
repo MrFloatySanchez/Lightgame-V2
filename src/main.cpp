@@ -1,23 +1,9 @@
-/*
-#ifdef MONITOR
-Serial.print ();
-Serial.print (" > ");
-Serial.print ();
-Serial.print (" - ");
-Serial.print ();
-Serial.print (" | ");
 
-Serial.println ();
-#endif
-
-
-*/
 /*
   ToDo
   - Exclusiv-Logik Taster
     - Via ID Kontatante?
  */
-
 // define MONITOR auskommentieren um den seriellen Monitor auszulassen
 // #define MONITOR
 
@@ -238,25 +224,10 @@ void alarmSwitch()
   case Alarm_Status::off:
     alarm_ton = HIGH;
     alarm_licht = HIGH;
-    // if (currentTime - alarm_last_time > alarm_duration)
-    //   global_Alarm = silent;
     break;
   case Alarm_Status::on:
     alarm_ton = LOW;
     alarm_licht = LOW;
-    // global_Alarm = off;
-    // for (Modul_Lichtschranke &ls : Alle_Lichtschranken)
-    // {
-    //   if (ls.new_state)
-    //   {
-    //     global_Alarm = silent;
-    //     ls.flash = 1;
-    //   }
-    //   else
-    //   {
-    //     ls.flash = 0;
-    //   }
-    // }
     break;
   case Alarm_Status::silent:
     alarm_ton = HIGH;
@@ -273,19 +244,19 @@ void setLevelZero()
   Alle_Lichtschranken[1].current_state = 1;
   Alle_Lichtschranken[2].current_state = 1;
   Alle_Lichtschranken[3].current_state = 1;
-  /*  Alle_Lichtschranken[4].current_state = 1;
-    Alle_Lichtschranken[5].current_state = 1;
-    Alle_Lichtschranken[6].current_state = 1;
-    Alle_Lichtschranken[7].current_state = 1;
-    Alle_Lichtschranken[8].current_state = 1;
-    Alle_Lichtschranken[9].current_state = 1;
-    Alle_Lichtschranken[10].current_state = 1;
-    Alle_Lichtschranken[11].current_state = 1;
-    Alle_Lichtschranken[12].current_state = 1;
-    Alle_Lichtschranken[12].current_state = 1;
-    Alle_Lichtschranken[13].current_state = 1;
-    Alle_Lichtschranken[15].current_state = 1;
-    Alle_Lichtschranken[16].current_state = 1; */
+  Alle_Lichtschranken[4].current_state = 1;
+  Alle_Lichtschranken[5].current_state = 1;
+  Alle_Lichtschranken[6].current_state = 1;
+  Alle_Lichtschranken[7].current_state = 1;
+  Alle_Lichtschranken[8].current_state = 1;
+  Alle_Lichtschranken[9].current_state = 1;
+  Alle_Lichtschranken[10].current_state = 1;
+  Alle_Lichtschranken[11].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[13].current_state = 1;
+  Alle_Lichtschranken[15].current_state = 1;
+  Alle_Lichtschranken[16].current_state = 1;
 }
 
 void setLevelOne()
@@ -294,19 +265,19 @@ void setLevelOne()
   Alle_Lichtschranken[1].current_state = 1;
   Alle_Lichtschranken[2].current_state = 1;
   Alle_Lichtschranken[3].current_state = 1;
-  /*    Alle_Lichtschranken[4].current_state = 1;
-     Alle_Lichtschranken[5].current_state = 1;
-     Alle_Lichtschranken[6].current_state = 1;
-     Alle_Lichtschranken[7].current_state = 1;
-     Alle_Lichtschranken[8].current_state = 1;
-     Alle_Lichtschranken[9].current_state = 1;
-     Alle_Lichtschranken[10].current_state = 1;
-     Alle_Lichtschranken[11].current_state = 1;
-     Alle_Lichtschranken[12].current_state = 1;
-     Alle_Lichtschranken[12].current_state = 1;
-     Alle_Lichtschranken[13].current_state = 1;
-     Alle_Lichtschranken[15].current_state = 1;
-     Alle_Lichtschranken[16].current_state = 1; */
+  Alle_Lichtschranken[4].current_state = 1;
+  Alle_Lichtschranken[5].current_state = 1;
+  Alle_Lichtschranken[6].current_state = 1;
+  Alle_Lichtschranken[7].current_state = 1;
+  Alle_Lichtschranken[8].current_state = 1;
+  Alle_Lichtschranken[9].current_state = 1;
+  Alle_Lichtschranken[10].current_state = 1;
+  Alle_Lichtschranken[11].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[13].current_state = 1;
+  Alle_Lichtschranken[15].current_state = 1;
+  Alle_Lichtschranken[16].current_state = 1;
 }
 
 void setLevelTwo()
@@ -315,29 +286,25 @@ void setLevelTwo()
   Alle_Lichtschranken[1].current_state = 1;
   Alle_Lichtschranken[2].current_state = 1;
   Alle_Lichtschranken[3].current_state = 1;
-  /*    Alle_Lichtschranken[4].current_state = 1;
-     Alle_Lichtschranken[5].current_state = 1;
-     Alle_Lichtschranken[6].current_state = 1;
-     Alle_Lichtschranken[7].current_state = 1;
-     Alle_Lichtschranken[8].current_state = 1;
-     Alle_Lichtschranken[9].current_state = 1;
-     Alle_Lichtschranken[10].current_state = 1;
-     Alle_Lichtschranken[11].current_state = 1;
-     Alle_Lichtschranken[12].current_state = 1;
-     Alle_Lichtschranken[12].current_state = 1;
-     Alle_Lichtschranken[13].current_state = 1;
-     Alle_Lichtschranken[15].current_state = 1;
-     Alle_Lichtschranken[16].current_state = 1; */
+  Alle_Lichtschranken[4].current_state = 1;
+  Alle_Lichtschranken[5].current_state = 1;
+  Alle_Lichtschranken[6].current_state = 1;
+  Alle_Lichtschranken[7].current_state = 1;
+  Alle_Lichtschranken[8].current_state = 1;
+  Alle_Lichtschranken[9].current_state = 1;
+  Alle_Lichtschranken[10].current_state = 1;
+  Alle_Lichtschranken[11].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[12].current_state = 1;
+  Alle_Lichtschranken[13].current_state = 1;
+  Alle_Lichtschranken[15].current_state = 1;
+  Alle_Lichtschranken[16].current_state = 1;
 }
 
 void levelSwtich(bool force_setLevel = false)
 {
   if ((current_level != last_level) || force_setLevel)
-  { /*
-        for (auto &lvl : Level_Taster)
-        {
-          lvl.led_state = LOW;
-        } */
+  {
     switch (current_level)
     {
     case 0:
@@ -388,31 +355,31 @@ void setBlinkOne()
   if (currentTime - blink_last_time[zweitesTor] > blink_duration)
   {
     Alle_Lichtschranken[3].current_state = !Alle_Lichtschranken[3].current_state;
-    // Alle_Lichtschranken[4].current_state = !Alle_Lichtschranken[4].current_state;
-    // Alle_Lichtschranken[5].current_state = !Alle_Lichtschranken[5].current_state;
-    // Alle_Lichtschranken[6].current_state = !Alle_Lichtschranken[6].current_state;
+    Alle_Lichtschranken[4].current_state = !Alle_Lichtschranken[4].current_state;
+    Alle_Lichtschranken[5].current_state = !Alle_Lichtschranken[5].current_state;
+    Alle_Lichtschranken[6].current_state = !Alle_Lichtschranken[6].current_state;
     blink_last_time[zweitesTor] = currentTime;
   }
 
   // Tor 3
   if (currentTime - blink_last_time[drittesTor] > blink_duration)
   {
-    // Alle_Lichtschranken[7].current_state = !Alle_Lichtschranken[7].current_state;
-    // Alle_Lichtschranken[8].current_state = !Alle_Lichtschranken[8].current_state;
-    // Alle_Lichtschranken[9].current_state = !Alle_Lichtschranken[9].current_state;
-    // Alle_Lichtschranken[10].current_state = !Alle_Lichtschranken[10].current_state;
-    // Alle_Lichtschranken[11].current_state = !Alle_Lichtschranken[11].current_state;
+    Alle_Lichtschranken[7].current_state = !Alle_Lichtschranken[7].current_state;
+    Alle_Lichtschranken[8].current_state = !Alle_Lichtschranken[8].current_state;
+    Alle_Lichtschranken[9].current_state = !Alle_Lichtschranken[9].current_state;
+    Alle_Lichtschranken[10].current_state = !Alle_Lichtschranken[10].current_state;
+    Alle_Lichtschranken[11].current_state = !Alle_Lichtschranken[11].current_state;
     blink_last_time[drittesTor] = currentTime;
   }
 
   // Tor 4
   if (currentTime - blink_last_time[viertesTor] > blink_duration)
   {
-    // Alle_Lichtschranken[12].current_state = !Alle_Lichtschranken[12].current_state;
-    // Alle_Lichtschranken[13].current_state = !Alle_Lichtschranken[13].current_state;
-    // Alle_Lichtschranken[14].current_state = !Alle_Lichtschranken[14].current_state;
-    // Alle_Lichtschranken[15].current_state = !Alle_Lichtschranken[15].current_state;
-    // Alle_Lichtschranken[16].current_state = !Alle_Lichtschranken[16].current_state;
+    Alle_Lichtschranken[12].current_state = !Alle_Lichtschranken[12].current_state;
+    Alle_Lichtschranken[13].current_state = !Alle_Lichtschranken[13].current_state;
+    Alle_Lichtschranken[14].current_state = !Alle_Lichtschranken[14].current_state;
+    Alle_Lichtschranken[15].current_state = !Alle_Lichtschranken[15].current_state;
+    Alle_Lichtschranken[16].current_state = !Alle_Lichtschranken[16].current_state;
     blink_last_time[viertesTor] = currentTime;
   }
 }
@@ -434,9 +401,9 @@ void setBlinkTwo()
   {
     static bool newState = false;
     Alle_Lichtschranken[3].current_state = !newState;
-    // Alle_Lichtschranken[4].current_state = newState;
-    // Alle_Lichtschranken[5].current_state = !newState;
-    // Alle_Lichtschranken[6].current_state = newState;
+    Alle_Lichtschranken[4].current_state = newState;
+    Alle_Lichtschranken[5].current_state = !newState;
+    Alle_Lichtschranken[6].current_state = newState;
     newState = !newState;
     blink_last_time[zweitesTor] = currentTime;
   }
@@ -444,11 +411,11 @@ void setBlinkTwo()
   if (currentTime - blink_last_time[drittesTor] > blink_duration)
   {
     static bool newState = false;
-    // Alle_Lichtschranken[7].current_state = !newState;
-    // Alle_Lichtschranken[8].current_state = newState;
-    // Alle_Lichtschranken[9].current_state = !newState;
-    // Alle_Lichtschranken[10].current_state = newState;
-    // Alle_Lichtschranken[11].current_state = !newState;
+    Alle_Lichtschranken[7].current_state = !newState;
+    Alle_Lichtschranken[8].current_state = newState;
+    Alle_Lichtschranken[9].current_state = !newState;
+    Alle_Lichtschranken[10].current_state = newState;
+    Alle_Lichtschranken[11].current_state = !newState;
     newState = !newState;
     blink_last_time[drittesTor] = currentTime;
   }
@@ -456,11 +423,11 @@ void setBlinkTwo()
   if (currentTime - blink_last_time[viertesTor] > blink_duration)
   {
     static bool newState = false;
-    // Alle_Lichtschranken[12].current_state = newState;
-    // Alle_Lichtschranken[13].current_state = !newState;
-    // Alle_Lichtschranken[14].current_state = newState;
-    // Alle_Lichtschranken[15].current_state = !newState;
-    // Alle_Lichtschranken[16].current_state = newState;
+    Alle_Lichtschranken[12].current_state = newState;
+    Alle_Lichtschranken[13].current_state = !newState;
+    Alle_Lichtschranken[14].current_state = newState;
+    Alle_Lichtschranken[15].current_state = !newState;
+    Alle_Lichtschranken[16].current_state = newState;
     newState = !newState;
     blink_last_time[viertesTor] = currentTime;
   }
@@ -469,9 +436,7 @@ void setBlinkTwo()
 void blinkSwitch()
 {
   if (current_blink != last_blink)
-  { /*
-      for (auto &blink : Blink_Taster)
-        blink.led_state = LOW; */
+  {
     switch (current_blink)
     {
     case 0:
@@ -499,7 +464,7 @@ void blinkSwitch()
     blink_last_time[zweitesTor] = currentTime + (1 * offsetBetweenGates);
     blink_last_time[drittesTor] = currentTime + (2 * offsetBetweenGates);
     blink_last_time[viertesTor] = currentTime + (3 * offsetBetweenGates);
-  } // if
+  } // if (current_blink != last_blink)
 
   switch (current_blink)
   {
@@ -601,7 +566,7 @@ void loop()
     }
   }
 
-  /* Auswerten */
+  /* Auswerten + Status Setzten */
 
   if (global_Alarm == on && (currentTime - alarm_last_time > alarm_duration))
   {
@@ -628,12 +593,12 @@ void loop()
   levelSwtich(true);
   alarmSwitch();
 
-  /* Schalten */
+  /* Pins Schalten */
 
   for (Modul_Taster &lvl : Level_Taster)
   {
     digitalWrite(lvl.Led_PIN, lvl.led_state);
-    lvl.changeState()
+    // lvl.changeState()
   }
   for (Modul_Taster &blink : Blink_Taster)
   {
@@ -642,7 +607,6 @@ void loop()
   for (Modul_Lichtschranke &ls : Alle_Lichtschranken)
   {
     ls.light();
-    digitalWrite(ls.Led_PIN, ls.led_state);
   }
   digitalWrite(Alarm_Licht_Pin, alarm_licht);
   digitalWrite(Alarm_Ton_Pin, alarm_ton);
