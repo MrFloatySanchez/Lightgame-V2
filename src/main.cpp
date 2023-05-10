@@ -194,29 +194,6 @@ Modul_Lichtschranke Alle_Lichtschranken[] = {
     Modul_Lichtschranke(18, A12),
 };
 
-struct Modul_Trigger
-{
-  const int Signal{};
-
-  unsigned long last_trigger;
-  const unsigned long triggerDelay = 2000;
-
-  Modul_Trigger(int Pin) : Signal(Pin) {}
-
-  bool
-  lesen()
-  {
-    bool reading = digitalRead(Signal);
-
-    if (currentTime - last_trigger > triggerDelay)
-      return reading;
-    else
-      return false;
-  }
-};
-
-Modul_Trigger trigger = 22;
-
 void alarmSwitch()
 {
   switch (global_Alarm)
@@ -516,28 +493,6 @@ void loop()
   /* Lesen */
   currentTime = millis();
 
-  if (trigger.lesen())
-  {
-    unsigned long timer_start;
-    unsigned long timer_end;
-    unsigned long timer_delta;
-
-    if (game_state == waiting)
-    {
-      timer_start = currentTime;
-      game_state = playing;
-    }
-
-    if (game_state == playing)
-    {
-      timer_end = current_level;
-      timer_delta = timer_end - timer_start;
-#ifdef MONITOR
-      Serial.print(timer_delta);
-#endif
-    }
-  }
-
   for (Modul_Taster &lvl : Level_Taster)
   {
     if (lvl.checkForTastendruck())
@@ -545,7 +500,6 @@ void loop()
       current_level = lvl.id;
     }
   }
-
   for (Modul_Taster &blink : Blink_Taster)
   {
     if (blink.checkForTastendruck())
